@@ -1,2 +1,10 @@
 ---
 # defaults file for ansible-role-dnsmasq
+
+dnsmasq_pkg: dnsmasq
+dnsmasq_dependencies: []
+dnsmasq_config: |
+  local-ttl=60
+  interface=lo
+  bind-interfaces
+  cache-size=150

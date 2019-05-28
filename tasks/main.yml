@@ -1,2 +1,25 @@
 ---
 # tasks file for ansible-role-dnsmasq
+
+- block:
+
+    - name: install
+      apt:
+        name: "{{ dnsmasq_dependencies + dnsmasq_pkg is string | ternary([dnsmasq_pkg], dnsmasq_pkg) }}"
+        state: present
+        install_recommends: false
+      tags:
+        - install
+
+    - name: setup
+      template:
+        src: dnsmasq.conf.j2
+        dest: /etc/dnsmasq.conf
+        validate: "dnsmasq --test --conf-file=%s"
+      notify: dnsmasq restart
+      tags:
+        - setup
+
+  become: true
+  tags:
+    - dnsmasq
